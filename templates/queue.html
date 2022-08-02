@@ -19,7 +19,9 @@
             <table>
               <tr>
                 <td>
-                  <img src="{% static 'images/logo.png' %}" />
+                  <a href="/">
+                    <img src="{% static 'images/logo.png' %}" />
+                  </a>
                 </td>
                 <td><h1>Queue</h1></td>
               </tr>
@@ -92,12 +94,16 @@
           console.log("client added on queue");
           addUserToQueue(user);
         });
+        socket.on("removeClient", function (user) {
+          console.log("client served");
+          removeUserFromQueue();
+        });
       });
-      setInterval(() => {
-        if (!socket.connected) {
-          socket = io("http://localhost:5000");
-        }
-      }, 1000);
+      // setInterval(() => {
+      //   if (!socket.connected) {
+      //     socket = io("http://localhost:5000");
+      //   }
+      // }, 1000);
     </script>
   </body>
 </html>
