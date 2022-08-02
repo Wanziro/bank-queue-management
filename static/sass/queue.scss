@@ -1,0 +1,117 @@
+@import "colors";
+@import "mixins";
+
+body {
+  overflow-x: hidden;
+  background-color: $darkBlue;
+}
+
+.nav-header {
+  padding-top: 15px;
+  ul {
+    color: $white;
+    @include flex-space;
+    margin: 0px;
+    padding: 0px;
+    img {
+      width: 50px;
+    }
+    h1 {
+      margin-left: 10px;
+    }
+    li {
+      list-style: none;
+      ol {
+        @include flex-center;
+        margin: 0px;
+        padding: 0px;
+        li {
+          list-style: none;
+          a {
+            padding-left: 15px;
+            color: $yellow;
+          }
+        }
+      }
+    }
+  }
+}
+
+.header-main-contents-container {
+  color: white;
+  margin-left: 11rem;
+  img {
+    width: 100%;
+  }
+  .braches-container {
+    margin-top: 15px;
+    .branches {
+      display: grid;
+      grid-template-rows: auto;
+      grid-template-columns: 1fr 1fr;
+      row-gap: 10px;
+      column-gap: 15px;
+      .branch {
+        color: $white;
+        background-color: $yellow;
+        padding: 10px;
+        @include flex-center;
+        text-transform: uppercase;
+        font-size: 20px;
+        clip-path: polygon(
+          50% 0%,
+          79% 0,
+          100% 0,
+          96% 55%,
+          100% 100%,
+          50% 100%,
+          0 100%,
+          4% 57%,
+          0 0,
+          37% 0
+        );
+      }
+    }
+  }
+}
+
+.about-container {
+  margin-top: 5rem;
+  min-height: 60vh;
+  color: white;
+  table {
+    span {
+      font-family: cursive;
+      margin-bottom: 5rem;
+      color: $yellow;
+    }
+  }
+  .user-container.user-blank {
+    opacity: 0.2;
+  }
+  .user-container {
+    @include flex-center;
+    flex-direction: column;
+    .position {
+      background-color: $lightBlue;
+      padding: 5px;
+      text-align: center;
+      min-width: 100px;
+    }
+    .blank-image {
+      width: 100px;
+      height: 50px;
+    }
+    .waiting-time {
+      color: $yellow;
+    }
+  }
+}
+
+footer {
+  color: $white;
+  padding: 5rem;
+  @include flex-center;
+  background-color: $darkBlue;
+  border-top: 2px solid $lightBlue;
+}

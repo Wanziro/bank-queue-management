@@ -1,0 +1,113 @@
+body {
+  overflow-x: hidden;
+  background-color: #003262;
+}
+
+.nav-header {
+  padding-top: 15px;
+}
+.nav-header ul {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0px;
+  padding: 0px;
+}
+.nav-header ul img {
+  width: 50px;
+}
+.nav-header ul h1 {
+  margin-left: 10px;
+}
+.nav-header ul li {
+  list-style: none;
+}
+.nav-header ul li ol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px;
+  padding: 0px;
+}
+.nav-header ul li ol li {
+  list-style: none;
+}
+.nav-header ul li ol li a {
+  padding-left: 15px;
+  color: #ffc107;
+}
+
+.header-main-contents-container {
+  color: white;
+  margin-left: 11rem;
+}
+.header-main-contents-container img {
+  width: 100%;
+}
+.header-main-contents-container .braches-container {
+  margin-top: 15px;
+}
+.header-main-contents-container .braches-container .branches {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 10px;
+  -moz-column-gap: 15px;
+       column-gap: 15px;
+}
+.header-main-contents-container .braches-container .branches .branch {
+  color: #fff;
+  background-color: #ffc107;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-size: 20px;
+  -webkit-clip-path: polygon(50% 0%, 79% 0, 100% 0, 96% 55%, 100% 100%, 50% 100%, 0 100%, 4% 57%, 0 0, 37% 0);
+          clip-path: polygon(50% 0%, 79% 0, 100% 0, 96% 55%, 100% 100%, 50% 100%, 0 100%, 4% 57%, 0 0, 37% 0);
+}
+
+.about-container {
+  margin-top: 5rem;
+  min-height: 60vh;
+  color: white;
+}
+.about-container table span {
+  font-family: cursive;
+  margin-bottom: 5rem;
+  color: #ffc107;
+}
+.about-container .user-container.user-blank {
+  opacity: 0.2;
+}
+.about-container .user-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.about-container .user-container .position {
+  background-color: #0c4da2;
+  padding: 5px;
+  text-align: center;
+  min-width: 100px;
+}
+.about-container .user-container .blank-image {
+  width: 100px;
+  height: 50px;
+}
+.about-container .user-container .waiting-time {
+  color: #ffc107;
+}
+
+footer {
+  color: #fff;
+  padding: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #003262;
+  border-top: 2px solid #0c4da2;
+}/*# sourceMappingURL=queue.css.map */

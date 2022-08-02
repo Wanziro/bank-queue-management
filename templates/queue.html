@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/queue.css' %}" />
+  </head>
+  <body>
+    <div class="nav-header">
+      <div class="container">
+        <ul>
+          <li>
+            <table>
+              <tr>
+                <td>
+                  <img src="{% static 'images/logo.png' %}" />
+                </td>
+                <td><h1>Queue</h1></td>
+              </tr>
+            </table>
+          </li>
+          <li>
+            <ol>
+              <li><a href="">Feedback</a></li>
+              <li><a href="">Login</a></li>
+            </ol>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <section class="about-container">
+      <div class="container">
+        <table
+          border="1"
+          style="border-color: white; width: 100%; margin-bottom: 5rem"
+        >
+          <tr>
+            <td align="center">Branch Name</td>
+            <td align="center">Queue Length</td>
+            <td align="center">Current Time</td>
+          </tr>
+          <tr>
+            <td align="center">
+              <span>BK HeadQuoter</span>
+            </td>
+            <td align="center">
+              <span id="queueLengthContainer">0</span>
+            </td>
+            <td align="center">
+              <span id="currentTimeComponent">00:00:00</span>
+            </td>
+          </tr>
+        </table>
+        <div class="row" id="queueContainer">
+          <!-- <div class="col-md-2 mb-3">
+            <div class="user-container">
+              <img src="{% static 'images/p1.svg' %}" style="width: 50px" />
+              <div class="position">1</div>
+              <div class="waiting-time">WT: 00:05:10</div>
+            </div>
+          </div>
+          <div class="col-md-2 mb-3">
+            <div class="user-container user-blank">
+              <div class="blank-image">&nbsp;</div>
+              <div class="position">12</div>
+              <div class="waiting-time">WT: 00:00:00</div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </section>
+    <footer>
+      <div>
+        <p>Designed by Shyaka. &copy;Copyright 2022</p>
+      </div>
+    </footer>
+
+    <script src="{% static 'js/queueController.js' %}"></script>
+    <script src="{% static 'js/queue.js' %}"></script>
+    <script src="{% static 'js/socket.io.min.js' %}"></script>
+    <script>
+      var socket = io("http://localhost:5000");
+      socket.on("connect", function () {
+        console.log("connected to the socket");
+        socket.on("addClient", function (user) {
+          console.log("client added on queue");
+          addUserToQueue(user);
+        });
+      });
+      setInterval(() => {
+        if (!socket.connected) {
+          socket = io("http://localhost:5000");
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>

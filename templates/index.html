@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+  </head>
+  <body>
+    <div class="bg-container">
+      <div class="container">
+        <div class="nav-header">
+          <ul>
+            <li>
+              <table>
+                <tr>
+                  <td>
+                    <img src="{% static 'images/logo.png' %}" />
+                  </td>
+                  <td><h1>Queue</h1></td>
+                </tr>
+              </table>
+            </li>
+            <li>
+              <ol>
+                <li><a href="/feedback">Feedback</a></li>
+                <li><a href="/login">Login</a></li>
+              </ol>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="header-main-contents-container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="braches-container">
+              <h2>Choose branch to get started</h2>
+              <div class="branches">
+                <div class="branch">Head quoter</div>
+                <div class="branch">Kimironko</div>
+                <div class="branch">Kacyiru</div>
+                <div class="branch">Remera</div>
+                <div class="branch">Nyabugogo</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 m-0 p-0">
+            <img src="{% static 'images/queue.png' %}" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <section class="about-container">
+      <h1 class="text-center">About BK Queue Management System</h1>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat
+              repellat quos et placeat blanditiis labore nihil reprehenderit
+              dolor beatae architecto. Reprehenderit vitae officiis eius sequi
+              hic quae aperiam cumque et.
+            </p>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat
+              repellat quos et placeat blanditiis labore nihil reprehenderit
+              dolor beatae architecto. Reprehenderit vitae officiis eius sequi
+              hic quae aperiam cumque et.
+            </p>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat
+              repellat quos et placeat blanditiis labore nihil reprehenderit
+              dolor beatae architecto. Reprehenderit vitae officiis eius sequi
+              hic quae aperiam cumque et.
+            </p>
+          </div>
+          <div class="col-md-4">
+            <img src="{% static 'images/q2.png' %}" />
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <div>
+        <p>Designed by Shyaka. &copy;Copyright 2022</p>
+      </div>
+    </footer>
+  </body>
+</html>
