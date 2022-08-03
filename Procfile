@@ -1,0 +1,1 @@
+web: gunicorn queue_management.wsgi
