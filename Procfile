@@ -1,1 +1,2 @@
-web: gunicorn queue_management.wsgi
+release: python manage.py migrate
+web: gunicorn queue_management.wsgi --log-file -
