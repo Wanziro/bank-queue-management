@@ -8,7 +8,12 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>BK Queue management system</title>
+    <title>Customer Queue Tracker</title>
+    <link
+      rel="shortcut icon"
+      href="{% static 'images/favicon.ico' %}"
+      type="image/x-icon"
+    />
 
     <meta name="description" content="" />
 
@@ -81,6 +86,7 @@
                 action="/dashboard/"
                 method="POST"
               >
+                {% csrf_token %}
                 <div class="mb-3">
                   <label for="email" class="form-label"
                     >Email or Username</label
@@ -113,9 +119,15 @@
                   </div>
                 </div>
                 <div class="mb-3">
-                  <button class="btn btn-primary d-grid w-100" type="submit">
-                    Sign in
-                  </button>
+                  <a href="/dashboard">
+                    <button
+                      type="button"
+                      class="btn btn-primary d-grid w-100"
+                      type="submit"
+                    >
+                      Sign in
+                    </button>
+                  </a>
                 </div>
               </form>
             </div>

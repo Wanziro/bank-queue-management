@@ -87,7 +87,7 @@ body {
     }
   }
   .user-container.user-blank {
-    opacity: 0.2;
+    opacity: 0.5;
   }
   .user-container {
     @include flex-center;
@@ -103,7 +103,7 @@ body {
       height: 50px;
     }
     .waiting-time {
-      color: $yellow;
+      color: $darkBlue;
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       font-weight: 600;
     }
@@ -119,4 +119,8 @@ footer {
   @include flex-center;
   background-color: $darkBlue;
   border-top: 2px solid $lightBlue;
+}
+.queue-main-container {
+  background-color: $white;
+  padding: 3rem 0px;
 }

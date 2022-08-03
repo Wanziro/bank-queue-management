@@ -5,7 +5,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Customer Queue Tracker</title>
+    <link
+      rel="shortcut icon"
+      href="{% static 'images/favicon.ico' %}"
+      type="image/x-icon"
+    />
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
@@ -59,21 +64,10 @@
             </td>
           </tr>
         </table>
-        <div class="row" id="queueContainer">
-          <!-- <div class="col-md-2 mb-3">
-            <div class="user-container">
-              <img src="{% static 'images/p1.svg' %}" style="width: 50px" />
-              <div class="position">1</div>
-              <div class="waiting-time">WT: 00:05:10</div>
-            </div>
-          </div>
-          <div class="col-md-2 mb-3">
-            <div class="user-container user-blank">
-              <div class="blank-image">&nbsp;</div>
-              <div class="position">12</div>
-              <div class="waiting-time">WT: 00:00:00</div>
-            </div>
-          </div> -->
+      </div>
+      <div class="queue-main-container">
+        <div class="container">
+          <div class="row" id="queueContainer"></div>
         </div>
       </div>
     </section>
@@ -87,7 +81,7 @@
     <script src="{% static 'js/queue.js' %}"></script>
     <script src="{% static 'js/socket.io.min.js' %}"></script>
     <script>
-      var socket = io("http://localhost:5000");
+      var socket = io(URL);
       socket.on("connect", function () {
         console.log("connected to the socket");
         socket.on("addClient", function (user) {
@@ -99,11 +93,6 @@
           removeUserFromQueue();
         });
       });
-      // setInterval(() => {
-      //   if (!socket.connected) {
-      //     socket = io("http://localhost:5000");
-      //   }
-      // }, 1000);
     </script>
   </body>
 </html>
