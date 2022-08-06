@@ -1,4 +1,4 @@
-import datetime
+
 from pickle import TRUE
 from django.db import models
 
@@ -29,24 +29,3 @@ class QueueDetails(models.Model):
             "leaveTimeAndDate": self.leaveTimeAndDate,
             "status": self.status,
         }
-
-
-class Branches(models.Model):
-    id = models.AutoField(auto_created=True, primary_key=TRUE)
-    name = models.CharField(max_length=500, blank=False, null=False)
-    date = models.DateTimeField(default=datetime.datetime.now())
-
-    # def __str__(self):
-    #     return self.name + ' - ' + self.name
-
-    # def serialize(self):
-    #     return {
-    #         "id": self.id,
-    #         "name": self.name,
-    #         "day": self.day,
-    #         "month": self.month,
-    #         "year": self.year,
-    #         "joinedTimeAndDate": self.joinedTimeAndDate,
-    #         "leaveTimeAndDate": self.leaveTimeAndDate,
-    #         "status": self.status,
-    #     }
