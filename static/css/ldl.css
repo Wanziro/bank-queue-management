@@ -18,7 +18,7 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #fed;
+  background: #003262;
   margin: -4px 0 0 -4px;
 }
 
@@ -139,7 +139,7 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #003262;
+  background: #fff;
   margin: -4px 0 0 -4px;
 }
 
@@ -239,4 +239,9 @@
   100% {
     transform: rotate(360deg);
   }
+}
+.center-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }/*# sourceMappingURL=ldl.css.map */

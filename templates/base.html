@@ -49,6 +49,7 @@
       rel="stylesheet"
       href="{% static 'assets/vendor/css/pages/page-auth.css'%}"
     />
+    <link rel="stylesheet" href="{% static 'css/ldl.css'%}" />
     <script src="{%static 'assets/vendor/js/helpers.js'%}"></script>
     <script src="{% static 'assets/js/config.js'%}"></script>
   </head>
@@ -239,5 +240,6 @@
 
     <script src="{% static 'assets/vendor/js/menu.js' %}"></script>
     <script src="{% static 'assets/js/main.js'%}"></script>
+    {% block scripts %} {% endblock scripts %}
   </body>
 </html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Queue Tracker - Printer</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/vendor/css/pages/page-auth.css'%}"
+    />
+  </head>
+  <body></body>
+  <script>
+    const queueDetails = $("#queueDetails");
+    const monthFilter = $("#monthFilter");
+    const dateFilter = $("#dateFilter");
+    const ldl = `
+    <div class="center-center"><div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
+    `;
+    let bdsv = [];
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    const getPostData = (type) => {
+      if (type == "date") {
+        if (dateFilter.val() != "") {
+          monthFilter.val("");
+          return {
+            year: dateFilter.val().split("-")[0],
+            month: dateFilter.val().split("-")[1],
+            day: dateFilter.val().split("-")[2],
+          };
+        }
+      } else if (type == "month") {
+        if (monthFilter.val() != "") {
+          dateFilter.val("");
+          return {
+            year: monthFilter.val().split("-")[0],
+            month: monthFilter.val().split("-")[1],
+          };
+        }
+      } else {
+        if (monthFilter.val() != "") {
+          dateFilter.val("");
+          return {
+            year: monthFilter.val().split("-")[0],
+            month: monthFilter.val().split("-")[1],
+          };
+        }
+      }
+      return {};
+    };
+    const isServedBadly = (joined, leave) => {
+      const leaveDate = new Date(leave);
+      const joinedDate = new Date(joined);
+      const diffMs = leaveDate - joinedDate;
+      const diffDays = Math.floor(diffMs / 86400000); // days
+      const diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
+      const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+      return diffMins > 5 ? true : false;
+    };
+    const calculateTwt = (joined, leave) => {
+      const leaveDate = new Date(leave);
+      const joinedDate = new Date(joined);
+      const diffMs = leaveDate - joinedDate;
+      const diffDays = Math.floor(diffMs / 86400000); // days
+      const diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
+      const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+      const seconds = (leaveDate.getTime() - joinedDate.getTime()) / 1000;
+      try {
+        const diffSecs = new Date(seconds * 1000)?.toISOString().slice(11, 19);
+        return (
+          diffHrs + "h, " + diffMins + "m and " + diffSecs.split(":")[2] + "s"
+        );
+      } catch (error) {
+        return diffHrs + "h, " + diffMins + "m and " + 0 + "s";
+      }
+    };
+    const csrftoken = getCookie("csrftoken");
+    const fetchQueue = (type = "auto") => {
+      queueDetails.html(ldl);
+      $.ajax({
+        url: "/dashboard/api/queue/",
+        headers: { "X-CSRFToken": csrftoken },
+        method: "POST",
+        data: getPostData(type),
+        success: (data) => {
+          if (data.length > 0) {
+            data.map((item, i) => {
+              if (item.leaveTimeAndDate != "") {
+                isServedBadly(item.joinedTimeAndDate, item.leaveTimeAndDate)
+                  ? bdsv.push(i)
+                  : null;
+              }
+            });
+          } else {
+            bdsv = [];
+          }
+          let output = `
+            <div class="row">
+              <div class="col-md-4">
+                <div class="alert alert-info">
+                  <h4>${data.length}</h4>
+                  <p>Total Clients</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="alert alert-success">
+                  <h4>${
+                    data.filter((item) => item.status == "served").length
+                  }</h4>
+                  <p>Total Served</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="alert alert-danger">
+                  <h4>${bdsv.length}</h4>
+                  <p>Bad Service</p>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <th>#</th>
+                  <th>Client</th>
+                  <th>Date & Time</th>
+                  <th>Status</th>
+                  <th>Total Waiting time</th>
+  
+          `;
+          data.map((item, i) => {
+            output += `
+            <tr>
+              <td class='${bdsv.indexOf(i) != -1 ? "bg-dark" : ""}'>${
+              i + 1
+            }</td>
+              <td class='${bdsv.indexOf(i) != -1 ? "bg-dark" : ""}'>${
+              item.name
+            }</td>
+              <td class='${bdsv.indexOf(i) != -1 ? "bg-dark" : ""}'>
+                ${new Date(item.joinedTimeAndDate).getDate()}-
+                ${new Date(item.joinedTimeAndDate).getMonth() + 1}-
+                ${new Date(item.joinedTimeAndDate).getFullYear()} 
+                ${new Date(item.joinedTimeAndDate).getHours()}:${new Date(
+              item.joinedTimeAndDate
+            ).getMinutes()}:${new Date(item.joinedTimeAndDate).getSeconds()}
+            </td>
+            <td class='${bdsv.indexOf(i) != -1 ? "bg-dark" : ""}'>${
+              item.status
+            }</td>
+              <td class='${
+                bdsv.indexOf(i) != -1 ? "bg-dark" : ""
+              }'>${calculateTwt(
+              item.joinedTimeAndDate,
+              item.leaveTimeAndDate
+            )}</td>
+              <tr>
+            `;
+          });
+          output += `
+            <div>
+          </table>`;
+          setTimeout(() => {
+            queueDetails.html(output);
+          }, 2000);
+        },
+      });
+    };
+    $(document).ready(() => {
+      fetchQueue();
+    });
+  </script>
+</html>

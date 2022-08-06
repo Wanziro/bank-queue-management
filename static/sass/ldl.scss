@@ -1,4 +1,5 @@
 @import "colors";
+@import "mixins";
 .lds-roller {
   display: inline-block;
   position: relative;
@@ -16,7 +17,7 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #fed;
+  background: $darkBlue;
   margin: -4px 0 0 -4px;
 }
 .lds-roller div:nth-child(1) {
@@ -101,7 +102,7 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: $darkBlue;
+  background: $white;
   margin: -4px 0 0 -4px;
 }
 .lds-roller2 div:nth-child(1) {
@@ -167,4 +168,8 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.center-center {
+  @include flex-center;
 }
