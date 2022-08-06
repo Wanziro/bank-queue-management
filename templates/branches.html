@@ -1,0 +1,57 @@
+{% extends "base.html" %} {% load static %} {% block contents %}
+<div class="container-xxl flex-grow-1 container-p-y">
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h4>Create New Branch</h4>
+          <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="">Name</label>
+              <input
+                type="text"
+                placeholder="Enter branch name"
+                name="branchName"
+                class="form-control"
+                required
+              />
+              <button class="btn btn-primary mt-3">Save Branch</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <th>#</th>
+                <th>Branch Name</th>
+                <th>Date Created</th>
+                <th>Action</th>
+              </thead>
+              <tbody>
+                {% for branch in branches %}
+                <tr>
+                  <td>{{branch.id}}</td>
+                  <td>{{branch.name}}</td>
+                  <td>{{branch.date}}</td>
+                  <td>
+                    <a href="branches/rm/{{branch.id}}">
+                      <button class="btn btn-danger">Delete</i></button>
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock contents %}

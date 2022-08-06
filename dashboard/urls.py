@@ -3,6 +3,6 @@ from . import views
 
 urlpatterns = [
     path('', views.dashboard, name="dashboard"),
-    # path('<int:id>', views.singleBlog),
-    # path('create', views.create, name="create"),
+    path('branches', views.branches, name="branches"),
+    path('branches/rm/<int:id>', views.deleteBranch),
 ]
