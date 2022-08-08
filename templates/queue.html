@@ -70,6 +70,11 @@
           <div class="row" id="queueContainer"></div>
         </div>
       </div>
+      <div class="container">
+        <div style="padding: 2rem 0px">
+          <canvas id="lChart" height="70"></canvas>
+        </div>
+      </div>
     </section>
     <footer>
       <div>
@@ -78,8 +83,9 @@
     </footer>
 
     <script src="{% static 'js/queueController.js' %}"></script>
-    <script src="{% static 'js/queue.js' %}"></script>
     <script src="{% static 'js/socket.io.min.js' %}"></script>
+    <script src="{% static 'js/chart.min.js' %}"></script>
+    <script src="{% static 'js/queue.js' %}"></script>
     <script>
       var socket = io(URL);
       socket.on("connect", function () {
@@ -91,6 +97,7 @@
         socket.on("removeClient", function (user) {
           console.log("client served");
           removeUserFromQueue();
+          getChartData();
         });
       });
     </script>

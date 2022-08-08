@@ -89,6 +89,20 @@ const calculateTimeOnTheFly = (item) => {
   const formatted = new Date(seconds * 1000).toISOString().slice(11, 19);
   return "WT " + formatted;
 };
+const getTotalWt = (joined, leave) => {
+  let leaveDate;
+  if (leave != "-") {
+    leaveDate = new Date(leave);
+  } else {
+    leaveDate = new Date();
+  }
+  const joinedDate = new Date(joined);
+  const diffMs = leaveDate - joinedDate;
+  const diffDays = Math.floor(diffMs / 86400000); // days
+  const diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
+  const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+  return diffMins;
+};
 
 const handleClientsTimeEllapsed = () => {
   for (let i = 0; i < queue.length; i++) {
@@ -107,8 +121,67 @@ const handleClientsTimeEllapsed = () => {
   }
 };
 
+const lcData = {
+  labels: [],
+  datasets: [
+    {
+      label: "Queue Statistics (X:client,Y:min)",
+      backgroundColor: "#ffc107",
+      borderColor: "#FFF",
+      titleColor: "#FFF",
+      borderWidth: 1,
+      data: [0, 0, 0],
+    },
+  ],
+};
+const lcConfig = {
+  type: "line",
+  data: lcData,
+  options: {
+    plugins: {
+      tooltip: {
+        callbacks: {
+          footer: (tooltipItem) =>
+            "Waiting Time: " + tooltipItem[0].raw.y + "Min",
+        },
+      },
+    },
+  },
+};
+const lChartObj = new Chart(lChart, lcConfig);
+
+const handleLcChart = () => {
+  const wts = [];
+  const labes = [];
+  if (chartData.length > 0) {
+    for (let i = 0; i < chartData.length; i++) {
+      const wt = getTotalWt(
+        chartData[i].joinedTimeAndDate,
+        chartData[i].leaveTimeAndDate
+      );
+      if (wts.indexOf(wt) == -1) wts.push({ x: "C", y: wt });
+      labes.push("C");
+    }
+  } else {
+    lcData.labels = [];
+  }
+  lcData.labels = labes;
+  lcData.datasets[0].data = wts;
+  lChartObj.update();
+};
+const getChartData = () => {
+  $.ajax({
+    url: "/api/chart",
+    method: "GET",
+    success: (data) => {
+      chartData = data;
+      handleLcChart();
+    },
+  });
+};
 $(document).ready(function () {
   loadQueue();
+  getChartData();
   $.ajax({
     url: "/api/getclients",
     method: "GET",

@@ -47,6 +47,29 @@ class GetClientsOnTheQueue(View):
         return JsonResponse([client.serialize() for client in clients], safe=False)
 
 
+class GetChartData(View):
+    def get(self, request):
+        day = datetime.datetime.now().day
+        month = datetime.datetime.now().month
+        year = datetime.datetime.now().year
+
+        clients = QueueDetails.objects.filter(
+            day=day,
+            month=month,
+            year=year,
+            status="served"
+        )
+        if len(clients) > 0:
+            return JsonResponse([client.serialize() for client in clients], safe=False)
+        else:
+            clients = QueueDetails.objects.filter(
+                month=month,
+                year=year,
+                status="served"
+            )
+            return JsonResponse([client.serialize() for client in clients], safe=False)
+
+
 class AddClientToTheQueue(View):
     def get(self, request):
         day = request.GET.get('day')
