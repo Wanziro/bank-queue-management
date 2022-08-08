@@ -15,6 +15,10 @@ def dashboard(request):
     return render(request, 'dashboard.html', context)
 
 
+def printer(request):
+    return render(request, 'printer.html')
+
+
 def deleteBranch(req, id):
     models.Branches.objects.filter(id=id).delete()
     return redirect('branches')

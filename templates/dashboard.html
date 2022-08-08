@@ -46,7 +46,7 @@
               </td>
               <td>&nbsp;&nbsp;&nbsp;</td>
               <td>
-                <button class="btn btn-info">
+                <button class="btn btn-info" onclick="handlePrinter()">
                   <i class="bx bx-printer"></i>
                 </button>
               </td>
@@ -253,6 +253,23 @@
         }, 1000);
       },
     });
+  };
+  const handlePrinter = () => {
+    if (monthFilter.val() != "") {
+      const q =
+        monthFilter.val().split("-")[1] + "_" + monthFilter.val().split("-")[0];
+      window.location = "/dashboard/printer?q=" + q;
+    } else if (dateFilter.val() != "") {
+      const q =
+        dateFilter.val().split("-")[2] +
+        "_" +
+        dateFilter.val().split("-")[1] +
+        "_" +
+        dateFilter.val().split("-")[0];
+      window.location = "/dashboard/printer?q=" + q;
+    } else {
+      window.location = "/dashboard/printer?q=_";
+    }
   };
   const fetchQueueSilent = (type = "auto") => {
     $.ajax({
