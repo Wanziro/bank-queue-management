@@ -8,6 +8,9 @@ from django.db import models
 class Branches(models.Model):
     id = models.AutoField(auto_created=True, primary_key=TRUE)
     name = models.CharField(max_length=500, blank=False, null=False)
+    lat = models.TextField()
+    long = models.TextField()
+    address = models.CharField(max_length=500, blank=False, null=False)
     date = models.DateTimeField(default=datetime.datetime.now())
 
     # def __str__(self):

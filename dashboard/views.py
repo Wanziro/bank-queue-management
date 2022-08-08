@@ -54,8 +54,14 @@ def queue(req):
 def branches(request):
     if request.method == "POST":
         branchName = request.POST['branchName']
+        lat = request.POST['lat']
+        long = request.POST['long']
+        address = request.POST['address']
         models.Branches.objects.create(
             name=branchName,
+            lat=lat,
+            long=long,
+            address=address
 
         )
         return redirect('branches')
