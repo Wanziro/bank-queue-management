@@ -54,7 +54,20 @@
           </table>
         </div>
       </div>
-      <div id="queueDetails" class="mt-3"></div>
+      <div id="queueDetails" class="mt-3">
+        <div class="center-center">
+          <div class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -147,6 +160,11 @@
     }
   };
   const csrftoken = getCookie("csrftoken");
+  const findPercentage = (a) => {
+    return a.length > 0
+      ? (((bdsv.length > 0 ? bdsv.length : 1) * 100) / a.length).toFixed(1)
+      : 0;
+  };
   const fetchQueue = (type = "auto") => {
     queueDetails.html(ldl);
     $.ajax({
@@ -155,16 +173,15 @@
       method: "POST",
       data: getPostData(type),
       success: (data) => {
+        bdsv = [];
         if (data.length > 0) {
           data.map((item, i) => {
             if (item.leaveTimeAndDate != "") {
               isServedBadly(item.joinedTimeAndDate, item.leaveTimeAndDate)
-                ? bdsv.push(i)
+                ? bdsv.push(item.id)
                 : null;
             }
           });
-        } else {
-          bdsv = [];
         }
         let output = `
           <div class="row">
@@ -184,11 +201,7 @@
             </div>
             <div class="col-md-4">
               <div class="alert alert-danger">
-                <h4>${
-                  data.length > 0
-                    ? ((bdsv.length * 100) / data.length).toFixed(1)
-                    : 0
-                }%</h4>
+                <h4>${findPercentage(data)}%</h4>
                 <p>Bad Service</p>
               </div>
             </div>
@@ -206,11 +219,13 @@
         data.map((item, i) => {
           output += `
           <tr>
-            <td class='${bdsv.indexOf(i) != -1 ? "bg-dark" : ""}'>${i + 1}</td>
-            <td class='${bdsv.indexOf(i) != -1 ? "bg-dark" : ""}'>${
+            <td class='${bdsv.indexOf(item.id) != -1 ? "bg-dark" : ""}'>${
+            i + 1
+          }</td>
+            <td class='${bdsv.indexOf(item.id) != -1 ? "bg-dark" : ""}'>${
             item.name
           }</td>
-            <td class='${bdsv.indexOf(i) != -1 ? "bg-dark" : ""}'>
+            <td class='${bdsv.indexOf(item.id) != -1 ? "bg-dark" : ""}'>
               ${new Date(item.joinedTimeAndDate).getDate()}-
               ${new Date(item.joinedTimeAndDate).getMonth() + 1}-
               ${new Date(item.joinedTimeAndDate).getFullYear()} 
@@ -218,11 +233,11 @@
             item.joinedTimeAndDate
           ).getMinutes()}:${new Date(item.joinedTimeAndDate).getSeconds()}
           </td>
-          <td class='${bdsv.indexOf(i) != -1 ? "bg-dark" : ""}'>${
+          <td class='${bdsv.indexOf(item.id) != -1 ? "bg-dark" : ""}'>${
             item.status
           }</td>
             <td class='${
-              bdsv.indexOf(i) != -1 ? "bg-dark" : ""
+              bdsv.indexOf(item.id) != -1 ? "bg-dark" : ""
             }'>${calculateTwt(
             item.joinedTimeAndDate,
             item.leaveTimeAndDate
@@ -235,12 +250,115 @@
         </table>`;
         setTimeout(() => {
           queueDetails.html(output);
-        }, 2000);
+        }, 1000);
       },
     });
+  };
+  const fetchQueueSilent = (type = "auto") => {
+    $.ajax({
+      url: "/dashboard/api/queue/",
+      headers: { "X-CSRFToken": csrftoken },
+      method: "POST",
+      data: getPostData(type),
+      success: (data) => {
+        bdsv = [];
+        if (data.length > 0) {
+          data.map((item, i) => {
+            if (item.leaveTimeAndDate != "") {
+              isServedBadly(item.joinedTimeAndDate, item.leaveTimeAndDate)
+                ? bdsv.push(item.id)
+                : null;
+            }
+          });
+        }
+        let output = `
+          <div class="row">
+            <div class="col-md-4">
+              <div class="alert alert-info">
+                <h4>${data.length}</h4>
+                <p>Total Clients</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="alert alert-success">
+                <h4>${
+                  data.filter((item) => item.status == "served").length
+                }</h4>
+                <p>Total Served</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="alert alert-danger">
+                <h4>${findPercentage(data)}%</h4>
+                <p>Bad Service</p>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <th>#</th>
+                <th>Client</th>
+                <th>Date & Time</th>
+                <th>Status</th>
+                <th>Total Waiting time</th>
+
+        `;
+        data.map((item, i) => {
+          output += `
+          <tr>
+            <td class='${bdsv.indexOf(item.id) != -1 ? "bg-dark" : ""}'>${
+            i + 1
+          }</td>
+            <td class='${bdsv.indexOf(item.id) != -1 ? "bg-dark" : ""}'>${
+            item.name
+          }</td>
+            <td class='${bdsv.indexOf(item.id) != -1 ? "bg-dark" : ""}'>
+              ${new Date(item.joinedTimeAndDate).getDate()}-
+              ${new Date(item.joinedTimeAndDate).getMonth() + 1}-
+              ${new Date(item.joinedTimeAndDate).getFullYear()} 
+              ${new Date(item.joinedTimeAndDate).getHours()}:${new Date(
+            item.joinedTimeAndDate
+          ).getMinutes()}:${new Date(item.joinedTimeAndDate).getSeconds()}
+          </td>
+          <td class='${bdsv.indexOf(item.id) != -1 ? "bg-dark" : ""}'>${
+            item.status
+          }</td>
+            <td class='${
+              bdsv.indexOf(item.id) != -1 ? "bg-dark" : ""
+            }'>${calculateTwt(
+            item.joinedTimeAndDate,
+            item.leaveTimeAndDate
+          )}</td>
+            <tr>
+          `;
+        });
+        output += `
+          <div>
+        </table>`;
+        setTimeout(() => {
+          queueDetails.html(output);
+        }, 1000);
+      },
+    });
+  };
+  const rT = () => {
+    if (dateFilter.val() != "") {
+      const d = new Date();
+      if (
+        d.getFullYear() == dateFilter.val().split("-")[0] &&
+        d.getMonth() + 1 == dateFilter.val().split("-")[1] &&
+        d.getDate() == dateFilter.val().split("-")[2]
+      ) {
+        fetchQueueSilent("date");
+      }
+    }
   };
   $(document).ready(() => {
     fetchQueue();
   });
+  setInterval(() => {
+    rT();
+  }, 5000);
 </script>
 {% endblock scripts %}
