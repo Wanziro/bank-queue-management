@@ -100,3 +100,21 @@ footer {
   @include flex-center;
   background-color: $darkBlue;
 }
+.bg-dark-blue {
+  background-color: $darkBlue;
+}
+.text-yellow {
+  color: $yellow;
+}
+.home-buttons {
+  margin-top: 5rem;
+  text-align: center;
+  button {
+    background-color: $darkBlue;
+    color: $white;
+    &:hover {
+      color: $yellow;
+      background-color: $lightBlue;
+    }
+  }
+}

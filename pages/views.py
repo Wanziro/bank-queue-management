@@ -3,13 +3,18 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import View
 from .models import QueueDetails
+from dashboard.models import Branches
 
 # Create your views here.
 from django.views.generic import TemplateView
 
 
-class Home(TemplateView):
-    template_name = 'index.html'
+def home(request):
+    branches = Branches.objects.all().order_by('date')[:5]
+    context = {
+        'branches': branches,
+    }
+    return render(request, 'index.html', context)
 
 
 class About(TemplateView):

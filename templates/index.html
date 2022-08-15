@@ -46,12 +46,20 @@
             <div class="braches-container">
               <h2>Choose branch to get started</h2>
               <div class="branches">
-                <a href="queue"> <div class="branch">Head quoter</div></a>
-                <a href="queue"> <div class="branch">Kimironko</div></a>
-                <a href="queue"> <div class="branch">Kacyiru</div></a>
-                <a href="queue"> <div class="branch">Remera</div></a>
-                <a href="queue"> <div class="branch">Nyabugogo</div></a>
+                {% if branches|length > 0 %} {% for branch in branches %}
+                <a href="queue"> <div class="branch">{{branch.name}}</div></a>
+                {% endfor %} {% else %}
+                <p>No branches found</p>
+                {% endif %}
               </div>
+            </div>
+            <div class="home-buttons">
+              <button class="btn bg-dark-blue text-white">
+                Browse all Branches
+              </button>
+              <button class="btn bg-dark-blue text-white">
+                Nearest branches
+              </button>
             </div>
           </div>
           <div class="col-md-6 m-0 p-0">
