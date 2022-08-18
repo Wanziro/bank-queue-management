@@ -157,11 +157,17 @@
           url: "/api/branches",
           method: "GET",
           success: (data) => {
+            console.log(data);
             $("#branchContents").html("");
-            data.map(item => {
+            data.map((item) => {
               $("#branchContents").append(`
+              <div style='padding:10px;border-bottom:1px solid #CCC'>
+                <a href="queue">
+                  <span>${item.name}</span>  
+                </a>
+              </div>
               `);
-            })
+            });
           },
         });
       };
