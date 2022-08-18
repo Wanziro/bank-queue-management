@@ -25,7 +25,7 @@ const addFreeChairs = () => {
   if (chairs.length < 3) {
     for (let i = 0; i < 6; i++) {
       chs += `
-      <div class="col-md-2 mb-3">
+      <div class="col col-md-2 col-sm-6 col-xs-6 mb-3">
         <div class="user-container user-blank">
           <div class="blank-image">&nbsp;</div>
           <div class="position">${queue.length + i + 1}</div>
@@ -57,7 +57,7 @@ const loadQueue = () => {
   let contents = "";
   for (let i = 0; i < queue.length; i++) {
     contents += `
-    <div class="col-md-2 mb-3">
+    <div class="col col-md-2 col-sm-6 col-xs-6 mb-3">
       <div class="user-container">
         <img src="/static/images/p1.svg" style="width: 50px" />
         <div class="position">${i + 1}</div>
