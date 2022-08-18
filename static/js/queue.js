@@ -129,13 +129,13 @@ const lcData = {
       backgroundColor: "#ffc107",
       borderColor: "#FFF",
       titleColor: "#FFF",
-      borderWidth: 1,
+      borderWidth: 2,
       data: [0, 0, 0],
     },
   ],
 };
 const lcConfig = {
-  type: "line",
+  type: "bar",
   data: lcData,
   options: {
     plugins: {

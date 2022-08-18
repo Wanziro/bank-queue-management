@@ -113,3 +113,9 @@ class UpdateClient(View):
             break
 
         return JsonResponse({'msg': 'Client updated successfull'})
+
+
+class GetAllBranches(View):
+    def get(self, request):
+        branches = Branches.objects.all()
+        return JsonResponse([branch.serialize() for branch in branches], safe=False)

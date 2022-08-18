@@ -16,14 +16,12 @@ class Branches(models.Model):
     # def __str__(self):
     #     return self.name + ' - ' + self.name
 
-    # def serialize(self):
-    #     return {
-    #         "id": self.id,
-    #         "name": self.name,
-    #         "day": self.day,
-    #         "month": self.month,
-    #         "year": self.year,
-    #         "joinedTimeAndDate": self.joinedTimeAndDate,
-    #         "leaveTimeAndDate": self.leaveTimeAndDate,
-    #         "status": self.status,
-    #     }
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "lat": self.lat,
+            "long": self.long,
+            "address": self.address,
+            "date": self.date,
+        }
