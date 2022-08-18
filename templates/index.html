@@ -61,7 +61,10 @@
               >
                 Browse all Branches
               </button>
-              <button class="btn bg-dark-blue text-white">
+              <button
+                class="btn bg-dark-blue text-white"
+                onclick="getLocation()"
+              >
                 Nearest branches
               </button>
             </div>
@@ -119,7 +122,7 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">All branches</h5>
+            <h2 class="modal-title" id="exampleModalLongTitle">All branches</h2>
             <button
               type="button"
               class="close"
@@ -146,7 +149,222 @@
         </div>
       </div>
     </div>
+
+    <div
+      class="modal fade"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+      id="nearestBranches"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title">Branches Near by you</h2>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="nearestBranchContents">
+            <div class="center-center">
+              <div class="lds-roller">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <script>
+      const toRadians = (degree) => {
+        return (degree * Math.PI) / 180;
+      };
+      const report = (state) => {
+        console.log("Permission " + state);
+      };
+      const getLocation = () => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            showPosition,
+            handlePosition,
+            { timeout: 10000 }
+          );
+        } else {
+          showProcesses("failed");
+        }
+      };
+      const showPosition = (position) => {
+        const lt = position.coords.latitude;
+        const ln = position.coords.longitude;
+        const ldl = `
+        <div class="center-center"><div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
+        `;
+        $("#nearestBranches").modal("show");
+        $("#nearestBranchContents").html(ldl);
+        $.ajax({
+          url: "/api/branches",
+          method: "GET",
+          success: (data) => {
+            const branches = [];
+            for (let i = 0; i < data.length; i++) {
+              branches.push({
+                ...data[i],
+                meter: distance(data[i].lat, data[i].long, lt, ln),
+              });
+            }
+            branches.sort(function (x, y) {
+              return x.meter - y.meter;
+            });
+            console.log("meter ", branches);
+            $("#nearestBranchContents").html("");
+            branches.map((item) => {
+              if (item.meter <= 10) {
+                $("#nearestBranchContents").append(`
+                <div style='padding:10px;border-bottom:1px solid #CCC'>
+                  <a href="queue" style="text-decoration:none">
+                    <table>
+                      <tr>
+                        <td>
+                          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                          width="30" height="30"
+                          viewBox="0 0 226 226"
+                          style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none"></path><g fill="#0d0070"><path d="M113,10.59375l-109.46875,88.28125l1.73804,2.31049c4.82722,6.43747 14.04477,7.54771 20.26331,2.44153l87.46741,-71.84576l87.46741,71.84576c6.21853,5.10619 15.43609,3.99594 20.2633,-2.44153l1.73804,-2.31049l-31.78125,-25.62915v-44.99585h-31.78125v19.3667zM113,45.90625l-84.75,67.09375v84.75h169.5v-74.15625zM91.8125,120.0625h42.375v63.5625h-42.375z"></path></g></g></svg>
+                        </td>
+                        <td>&nbsp;&nbsp;</td>
+                        <td>
+                          <span class='d-block'>${item.name}</span>
+                          <span>${item.meter.toFixed(
+                            1
+                          )}Km from your current location.</span>
+                        </td>
+                      </tr>
+                    </table>
+                  </a>
+                </div>
+              `);
+              }
+            });
+          },
+        });
+      };
+      const permissions = () => {
+        navigator.permissions
+          .query({ name: "geolocation" })
+          .then(function (result) {
+            if (result.state == "granted") {
+              report(result.state);
+              showProcesses("waiting2");
+              getLocation();
+            } else if (result.state == "prompt") {
+              report(result.state);
+              showProcesses("waiting");
+              getLocation();
+            } else if (result.state == "denied") {
+              report(result.state);
+              showProcesses("denied");
+            }
+            result.onchange = function () {
+              report(result.state);
+            };
+          });
+      };
+      const distance = (latitude1, longitude1, latitude2, longitude2) => {
+        var R = 6371;
+        var deltaLatitude = toRadians(latitude2 - latitude1);
+        var deltaLongitude = toRadians(longitude2 - longitude1);
+        latitude1 = toRadians(latitude1);
+        latitude2 = toRadians(latitude2);
+        var a =
+          Math.sin(deltaLatitude / 2) * Math.sin(deltaLatitude / 2) +
+          Math.cos(latitude1) *
+            Math.cos(latitude2) *
+            Math.sin(deltaLongitude / 2) *
+            Math.sin(deltaLongitude / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c;
+        return d;
+      };
+      const handlePosition = (err) => {
+        switch (err.code) {
+          case 0:
+            showProcesses("failed");
+            break;
+          case 1:
+            showProcesses("denied");
+            break;
+          case 2:
+            showProcesses("browserFailed");
+            break;
+          case 3:
+            if (attempts < 2) {
+              // showAttemptPrompt();
+              getLocation();
+              setTimeout(() => {
+                if (attempts == 2) {
+                  // showProcesses("stillTrying");
+                } else {
+                  // showProcesses("trying");
+                }
+              }, 1000);
+              attempts += 1;
+            } else {
+              // hideAttemptPrompt();
+              // showProcesses("triedButFailed");
+            }
+            break;
+        }
+      };
+      const showProcesses = (processeName) => {
+        if (processeName === "waiting2") {
+          alert("Waiting for location...");
+        }
+        if (processeName === "waiting") {
+          alert("Waiting for location...");
+        }
+        if (processeName === "failed") {
+          alert(
+            "Something went wrong while accessing your location, try again later!"
+          );
+        }
+        if (processeName === "denied") {
+          alert(
+            "You denied us to access your location, change this from your browser settings and try again later."
+          );
+        }
+        if (processeName === "browserFailed") {
+          alert(
+            "Your browser failed to determine your location, use different browser (chrome or fire fox are recommended)"
+          );
+        }
+        if (processeName === "trying") {
+          alert("We are still trying to know your loction...");
+        }
+        if (processeName === "stillTrying") {
+          alert("Still trying...");
+        }
+        if (processeName === "triedButFailed") {
+          alert(
+            "We tried more than once but failed, check your connection or use different browser (chrome or firefox are recommended)."
+          );
+        }
+        if (processeName === "success") {
+          alert("We found your location!");
+        }
+      };
+
       const handleAllBranches = () => {
         const ldl = `
         <div class="center-center"><div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
@@ -157,13 +375,26 @@
           url: "/api/branches",
           method: "GET",
           success: (data) => {
-            console.log(data);
+            // console.log(data);
             $("#branchContents").html("");
             data.map((item) => {
               $("#branchContents").append(`
               <div style='padding:10px;border-bottom:1px solid #CCC'>
-                <a href="queue">
-                  <span>${item.name}</span>  
+                <a href="queue" style="text-decoration:none">
+                  <table>
+                    <tr>
+                      <td>
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                        width="30" height="30"
+                        viewBox="0 0 226 226"
+                        style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,226v-226h226v226z" fill="none"></path><g fill="#0d0070"><path d="M113,10.59375l-109.46875,88.28125l1.73804,2.31049c4.82722,6.43747 14.04477,7.54771 20.26331,2.44153l87.46741,-71.84576l87.46741,71.84576c6.21853,5.10619 15.43609,3.99594 20.2633,-2.44153l1.73804,-2.31049l-31.78125,-25.62915v-44.99585h-31.78125v19.3667zM113,45.90625l-84.75,67.09375v84.75h169.5v-74.15625zM91.8125,120.0625h42.375v63.5625h-42.375z"></path></g></g></svg>
+                      </td>
+                      <td>&nbsp;&nbsp;</td>
+                      <td>
+                        <span>${item.name}</span>
+                      </td>
+                    </tr>
+                  </table>
                 </a>
               </div>
               `);
