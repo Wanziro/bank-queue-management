@@ -1,5 +1,3 @@
-import email
-from tkinter.font import names
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User
 from django.contrib import messages
