@@ -1,4 +1,3 @@
-from audioop import add
 from django.urls import path
 from .views import home, GetAllBranches, About, login_request, logout_request, register, feedback, Queue, AddClientToTheQueue, GetClientsOnTheQueue, UpdateClient, GetChartData
 
