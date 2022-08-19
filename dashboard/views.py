@@ -8,20 +8,29 @@ from pages import models as p
 
 
 def dashboard(request):
-    branches = models.Branches.objects.all().order_by('-date')
-    context = {
-        'branches': branches
-    }
-    return render(request, 'dashboard.html', context)
+    if request.user.is_authenticated:
+        branches = models.Branches.objects.all().order_by('-date')
+        context = {
+            'branches': branches
+        }
+        return render(request, 'dashboard.html', context)
+    else:
+        return redirect('/login')
 
 
 def printer(request):
-    return render(request, 'printer.html')
+    if request.user.is_authenticated:
+        return render(request, 'printer.html')
+    else:
+        return redirect('/login')
 
 
 def deleteBranch(req, id):
-    models.Branches.objects.filter(id=id).delete()
-    return redirect('branches')
+    if req.user.is_authenticated:
+        models.Branches.objects.filter(id=id).delete()
+        return redirect('branches')
+    else:
+        return redirect('/login')
 
 
 def queue(req):
@@ -52,22 +61,25 @@ def queue(req):
 
 
 def branches(request):
-    if request.method == "POST":
-        branchName = request.POST['branchName']
-        lat = request.POST['lat']
-        long = request.POST['long']
-        address = request.POST['address']
-        models.Branches.objects.create(
-            name=branchName,
-            lat=lat,
-            long=long,
-            address=address
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            branchName = request.POST['branchName']
+            lat = request.POST['lat']
+            long = request.POST['long']
+            address = request.POST['address']
+            models.Branches.objects.create(
+                name=branchName,
+                lat=lat,
+                long=long,
+                address=address
 
-        )
-        return redirect('branches')
+            )
+            return redirect('branches')
+        else:
+            branches = models.Branches.objects.all()
+            context = {
+                'branches': branches
+            }
+            return render(request, 'branches.html', context)
     else:
-        branches = models.Branches.objects.all()
-        context = {
-            'branches': branches
-        }
-        return render(request, 'branches.html', context)
+        return redirect('/login')

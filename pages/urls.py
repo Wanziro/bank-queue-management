@@ -1,11 +1,13 @@
 from audioop import add
 from django.urls import path
-from .views import home, GetAllBranches, About, Login, Feedback, Queue, AddClientToTheQueue, GetClientsOnTheQueue, UpdateClient, GetChartData
+from .views import home, GetAllBranches, About, login_request, logout_request, register, Feedback, Queue, AddClientToTheQueue, GetClientsOnTheQueue, UpdateClient, GetChartData
 
 urlpatterns = [
     path('about/', About.as_view(), name='about'),
     path('feedback/', Feedback.as_view(), name='feedback'),
-    path('login/', Login.as_view(), name='login'),
+    path('register/', register, name='register'),
+    path('login/', login_request, name='login'),
+    path('logout/', logout_request, name='logout'),
     path('queue/', Queue.as_view(), name='queue'),
     path('api/addclient/', AddClientToTheQueue.as_view(), name='api_add_client'),
     path('api/removeclient/', UpdateClient.as_view(), name='api_remove_client'),
