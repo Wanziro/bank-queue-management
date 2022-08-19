@@ -1,3 +1,5 @@
+import email
+from tkinter.font import names
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -9,7 +11,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import View
 
-from dashboard import models
+from dashboard import models as dashboardmodels
 from .models import QueueDetails
 from dashboard.models import Branches
 
@@ -85,8 +87,22 @@ def register(req):
             return redirect("/login")
 
 
-class Feedback(TemplateView):
-    template_name = 'feedback.html'
+def feedback(request):
+    if request.method == 'POST':
+        names = request.POST['names']
+        email = request.POST['email']
+        phone = request.POST['phone']
+        comment = request.POST['comment']
+        dashboardmodels.Feedbacks.objects.create(
+            customer_full_name=names,
+            email_address=email,
+            phone_number=phone,
+            message=comment
+        )
+        messages.success(
+            request, "Your feedback has been submitted successfully! we will get back to you if necessary")
+        return redirect('/feedback')
+    return render(request, 'feedback-form.html')
 
 
 class Queue(TemplateView):

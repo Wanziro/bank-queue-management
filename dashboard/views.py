@@ -33,6 +33,14 @@ def deleteBranch(req, id):
         return redirect('/login')
 
 
+def deleteFeedBack(req, id):
+    if req.user.is_authenticated:
+        models.Feedbacks.objects.filter(id=id).delete()
+        return redirect('feedbacks')
+    else:
+        return redirect('/login')
+
+
 def queue(req):
     if req.method == "POST":
         if 'day' in req.POST and 'month' in req.POST and 'year' in req.POST:
@@ -81,5 +89,16 @@ def branches(request):
                 'branches': branches
             }
             return render(request, 'branches.html', context)
+    else:
+        return redirect('/login')
+
+
+def feedbacks(request):
+    if request.user.is_authenticated:
+        feedbacks = models.Feedbacks.objects.all()
+        context = {
+            'feedbacks': feedbacks
+        }
+        return render(request, 'feedbacks.html', context)
     else:
         return redirect('/login')
