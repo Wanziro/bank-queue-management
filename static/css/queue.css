@@ -120,4 +120,14 @@ footer {
 .queue-main-container {
   background-color: #fff;
   padding: 3rem 0px;
+}
+
+.bar-chart {
+  height: 70px;
+}
+
+@media (max-width: 674px) {
+  .bar-chart {
+    height: 150px !important;
+  }
 }/*# sourceMappingURL=queue.css.map */

@@ -118,3 +118,13 @@ footer {
     }
   }
 }
+
+@media (max-width: 764px) {
+  .about-container {
+    height: auto;
+  }
+  .header-main-contents-container {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
