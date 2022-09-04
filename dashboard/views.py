@@ -41,6 +41,32 @@ def deleteFeedBack(req, id):
         return redirect('/login')
 
 
+def editBranch(req, id):
+    if req.user.is_authenticated:
+        if req.method == "POST":
+            branchName = req.POST['branchName']
+            lat = req.POST['lat']
+            long = req.POST['long']
+            address = req.POST['address']
+            id = req.POST['id']
+            models.Branches.objects.filter(
+                id=id
+            ).update(name=branchName,
+                     lat=lat,
+                     long=long,
+                     address=address)
+            return redirect('branches')
+        else:
+            branch = models.Branches.objects.get(id=id)
+            print(branch)
+            context = {
+                'branch': branch
+            }
+            return render(req, 'edit-branch.html', context)
+    else:
+        return redirect('/login')
+
+
 def queue(req):
     if req.method == "POST":
         if 'day' in req.POST and 'month' in req.POST and 'year' in req.POST:

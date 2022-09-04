@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home, GetAllBranches, About, login_request, logout_request, register, feedback, Queue, AddClientToTheQueue, GetClientsOnTheQueue, UpdateClient, GetChartData
+from .views import home, GetAllBranches, notificationReq, About, login_request, logout_request, notificationReq, register, feedback, Queue, AddClientToTheQueue, GetClientsOnTheQueue, UpdateClient, GetChartData
 
 urlpatterns = [
     path('about/', About.as_view(), name='about'),
@@ -13,5 +13,7 @@ urlpatterns = [
     path('api/getclients/', GetClientsOnTheQueue.as_view(), name='api_get_clients'),
     path('api/branches/', GetAllBranches.as_view(), name='api_all_branches'),
     path('api/chart/', GetChartData.as_view(), name='api_get_chart_data'),
+    path('api/notificationreq/', notificationReq,
+         name='api_save_notification'),
     path('', home, name='home'),
 ]

@@ -1,3 +1,4 @@
+from tkinter.font import names
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -10,7 +11,7 @@ from django.shortcuts import render
 from django.views.generic import View
 
 from dashboard import models as dashboardmodels
-from .models import QueueDetails
+from .models import NotificationRequest, QueueDetails
 from dashboard.models import Branches
 
 
@@ -101,6 +102,20 @@ def feedback(request):
             request, "Your feedback has been submitted successfully! we will get back to you if necessary")
         return redirect('/feedback')
     return render(request, 'feedback-form.html')
+
+
+def notificationReq(request):
+    if request.method == 'GET':
+        length = request.GET['length']
+        names = request.GET['names']
+        phone = request.GET['phone']
+        NotificationRequest.objects.create(
+            names=names,
+            phone=phone,
+            queueLength=length
+        )
+        return JsonResponse({'msg': 'Request was success'})
+    return JsonResponse({'msg': 'Error'})
 
 
 class Queue(TemplateView):

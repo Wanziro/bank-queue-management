@@ -1,5 +1,6 @@
 
 
+from datetime import datetime
 from pickle import TRUE
 from django.db import models
 
@@ -29,4 +30,23 @@ class QueueDetails(models.Model):
             "joinedTimeAndDate": self.joinedTimeAndDate,
             "leaveTimeAndDate": self.leaveTimeAndDate,
             "status": self.status,
+        }
+
+
+class NotificationRequest(models.Model):
+    id = models.AutoField(auto_created=True, primary_key=TRUE)
+    phone = models.CharField(max_length=10, blank=False)
+    names = models.CharField(max_length=50, blank=False)
+    queueLength = models.IntegerField(blank=False, null=False)
+    date = models.DateTimeField(default=datetime.now())
+
+    # def __str__(self):
+    #     return self.name + ' - ' + self.status
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "phone": self.phone,
+            "names": self.names,
+            "queueLength": self.queueLength,
         }

@@ -138,3 +138,9 @@ STATICFILES_STORAGE = (
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 django_heroku.settings(locals())
+
+
+GRAPH_MODELS = {
+    'all_applications': True,
+    'group_models': True,
+}

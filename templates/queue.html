@@ -34,6 +34,7 @@
           </li>
           <li>
             <ol>
+              <li><a href="#" onclick="showNoti()">Notification</a></li>
               <li><a href="/feedback">Feedback</a></li>
               <li><a href="/login">Login</a></li>
             </ol>
@@ -82,6 +83,56 @@
       </div>
     </footer>
 
+    <div
+      class="modal fade"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+      id="notification"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title" id="exampleModalLongTitle">
+              Get Notificatified Whenever Queue Changes
+            </h2>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" >
+            <form method="post" id="form">
+              <div class="form-group">
+                <label>Names</label>
+                <input type="text" class="form-control" placeholder="Enter your full names" required  id="names" required/>
+              </div>
+              <div class="form-group">
+                <label>Phone Number</label>
+                <input class="form-control" pattern="07[2,3,8,9]{1}[0-9]{7}"
+                title="Invalid Phone (use MTN or AIRTEL-TIGO mobile number)"
+                maxlength="10" name="phone" placeholder="Phone number ex: 07..." id="phone" required />
+              </div>
+              <div class="form-group">
+                <label>Expected Length</label>
+                <input type="number" class="form-control" id="length" placeholder="Expected queue length" required />
+              </div>
+              <small>You will get a notification on your phone number whenever queue matches length your expectations.</small>
+              <div class="form-group text-right" style="margin:2rem 0px">
+               <button class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="{% static 'js/queueController.js' %}"></script>
     <script src="{% static 'js/socket.io.min.js' %}"></script>
     <script src="{% static 'js/chart.min.js' %}"></script>
@@ -100,6 +151,30 @@
           getChartData();
         });
       });
+      const showNoti = () => {
+        $("#notification").modal("show");
+      };
+      $(document).ready(() => {
+      $("#form").submit(e => {
+        e.preventDefault()
+        $.ajax({
+          url:'/api/notificationreq/',method:"GET",data:{
+            names:$("#names").val(),
+            phone:$("#phone").val(),
+            length:$("#length").val()
+          },success:data => {
+            console.log(data)
+            if(data?.msg =="Request was success"){
+              alert("Thank you, We will let you know soon!")
+              $("#names").val("")
+              $("#phone").val("")
+                $("#length").val("")
+            }
+            $("#notification").modal("hide");
+          }
+        })
+      })
+      })
     </script>
   </body>
 </html>

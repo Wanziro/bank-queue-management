@@ -1,12 +1,13 @@
 {% extends "base.html" %} {% load static %} {% block contents %}
 <div class="container-xxl flex-grow-1 container-p-y">
-  <div class="row">
-    <div class="col-md-3 mb-4">
+
       <div class="card">
         <div class="card-body">
-          <h4>Create New Branch</h4>
+          <h4>Update Branch</h4>
+          {% if branch %}
           <form method="post">
             {% csrf_token %}
+            <input name="id" type="hidden" value="{{ branch.id }}" />
             <div class="form-group">
               <label for="">Name</label>
               <input
@@ -14,6 +15,7 @@
                 placeholder="Enter branch name"
                 name="branchName"
                 class="form-control"
+                value="{{ branch.name }}"
                 required
               />
             </div>
@@ -24,6 +26,7 @@
                 placeholder="Enter branch address"
                 name="address"
                 class="form-control"
+                value="{{ branch.address }}"
                 required
               />
             </div>
@@ -34,6 +37,7 @@
                 placeholder="Enter branch latitude"
                 name="lat"
                 class="form-control"
+                value="{{ branch.lat }}"
                 required
               />
             </div>
@@ -45,48 +49,13 @@
                 placeholder="Enter branch longitude"
                 name="long"
                 class="form-control"
+                value="{{ branch.long }}"
                 required
               />
             </div>
             <button class="btn btn-primary mt-3">Save Branch</button>
           </form>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-9">
-      <div class="card">
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <th>#</th>
-                <th>Branch Name</th>
-                <th>Address</th>
-                <th>Latitude</th>
-                <th>Longitude</th>
-                <th>Action</th>
-              </thead>
-              <tbody>
-                {% for branch in branches %}
-                <tr>
-                  <td>{{branch.id}}</td>
-                  <td>{{branch.name}}</td>
-                  <td>{{branch.address}}</td>
-                  <td>{{branch.lat}}</td>
-                  <td>{{branch.long}}</td>
-                  <td>
-                    <a href="branches/rm/{{branch.id}}">
-                      <button class="btn btn-danger">Delete</i></button>
-                    </a>
-                    <a href="branches/edit/{{branch.id}}">
-                      <button class="btn btn-primary">Edit</i></button>
-                    </a>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+          {% endif %}
         </div>
       </div>
     </div>
