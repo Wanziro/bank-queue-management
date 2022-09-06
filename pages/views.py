@@ -11,6 +11,7 @@ from django.shortcuts import render
 from django.views.generic import View
 
 from dashboard import models as dashboardmodels
+from dashboard import models
 from .models import NotificationRequest, QueueDetails
 from dashboard.models import Branches
 
@@ -118,8 +119,11 @@ def notificationReq(request):
     return JsonResponse({'msg': 'Error'})
 
 
-class Queue(TemplateView):
-    template_name = 'queue.html'
+def queue_request(req, id):
+    branch = models.Branches.objects.get(id=id)
+    return render(req, 'queue.html', {
+        "branch": branch
+    })
 
 
 class Dashboard(TemplateView):

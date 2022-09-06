@@ -48,7 +48,9 @@
               <h2>Choose branch to get started</h2>
               <div class="branches">
                 {% if branches|length > 0 %} {% for branch in branches %}
-                <a href="queue"> <div class="branch">{{branch.name}}</div></a>
+                <a href="queue/{{branch.id}}">
+                  <div class="branch">{{branch.name}}</div></a
+                >
                 {% endfor %} {% else %}
                 <p>No branches found</p>
                 {% endif %}
@@ -234,7 +236,7 @@
               if (item.meter <= 10) {
                 $("#nearestBranchContents").append(`
                 <div style='padding:10px;border-bottom:1px solid #CCC'>
-                  <a href="queue" style="text-decoration:none">
+                  <a href="queue/${item.id}" style="text-decoration:none">
                     <table>
                       <tr>
                         <td>
@@ -381,7 +383,7 @@
             data.map((item) => {
               $("#branchContents").append(`
               <div style='padding:10px;border-bottom:1px solid #CCC'>
-                <a href="queue" style="text-decoration:none">
+                <a href="queue/${item.id}" style="text-decoration:none">
                   <table>
                     <tr>
                       <td>

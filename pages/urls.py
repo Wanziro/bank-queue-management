@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home, GetAllBranches, notificationReq, About, login_request, logout_request, notificationReq, register, feedback, Queue, AddClientToTheQueue, GetClientsOnTheQueue, UpdateClient, GetChartData
+from .views import home, GetAllBranches, notificationReq, About, login_request, logout_request, notificationReq, register, feedback, queue_request, AddClientToTheQueue, GetClientsOnTheQueue, UpdateClient, GetChartData
 
 urlpatterns = [
     path('about/', About.as_view(), name='about'),
@@ -7,7 +7,7 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('login/', login_request, name='login'),
     path('logout/', logout_request, name='logout'),
-    path('queue/', Queue.as_view(), name='queue'),
+    path('queue/<int:id>', queue_request, name='queue'),
     path('api/addclient/', AddClientToTheQueue.as_view(), name='api_add_client'),
     path('api/removeclient/', UpdateClient.as_view(), name='api_remove_client'),
     path('api/getclients/', GetClientsOnTheQueue.as_view(), name='api_get_clients'),

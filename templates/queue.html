@@ -55,7 +55,11 @@
           </tr>
           <tr>
             <td align="center">
-              <span>BK HeadQuoter</span>
+              {% if branch %}
+              <span>
+                {{branch.name}}
+              </span>
+              {% endif %}
             </td>
             <td align="center">
               <span id="queueLengthContainer">0</span>
