@@ -38,6 +38,8 @@ class NotificationRequest(models.Model):
     phone = models.CharField(max_length=10, blank=False)
     names = models.CharField(max_length=50, blank=False)
     queueLength = models.IntegerField(blank=False, null=False)
+    notified = models.CharField(
+        max_length=3,  blank=False, null=False, default="No")
     date = models.DateTimeField(default=datetime.now())
 
     # def __str__(self):
@@ -49,4 +51,5 @@ class NotificationRequest(models.Model):
             "phone": self.phone,
             "names": self.names,
             "queueLength": self.queueLength,
+            "notified": self.notified
         }

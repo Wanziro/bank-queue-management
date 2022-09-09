@@ -204,8 +204,23 @@ class UpdateClient(View):
             QueueDetails.objects.filter(
                 id=client.id).update(status="served", leaveTimeAndDate=sdate)
             break
+        num = QueueDetails.objects.filter(
+            status="online", day=day,
+            month=month,
+            year=year
+        )
+        num2 = len(num)
+        notifiers = NotificationRequest.objects.filter(
+            queueLength=num2, notified='No')
+        return JsonResponse([notifier.serialize() for notifier in notifiers], safe=False)
 
-        return JsonResponse({'msg': 'Client updated successfull'})
+
+class UpdateNotification(View):
+    def get(self, request):
+        length = request.GET.get('length')
+        NotificationRequest.objects.filter(
+            queueLength=length).update(notified="Yes")
+        return JsonResponse({'msg': 'notifications updated successfull'})
 
 
 class GetAllBranches(View):
